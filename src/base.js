@@ -40,6 +40,10 @@ Base.Model = Base.Model.extend({}, {
     }
   },
 
+  delete: function(id) {
+    return this.forge({ id: id }).destroy();
+  },
+
   findOne: function(args) {
     return this.forge(args).fetch({ require: true });
   }

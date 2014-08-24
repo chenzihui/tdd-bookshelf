@@ -70,5 +70,16 @@ describe('List', function() {
         done();
       });
     });
+
+    it('should allow deleting existing lists', function(done) {
+      List.delete(_list.id)
+      .then(function() {
+        return List.findOne(_list.id);
+      })
+      .catch(function(err) {
+        expect(err).to.exist;
+        done();
+      });
+    });
   });
 });
