@@ -13,7 +13,7 @@ describe('List item', function() {
   beforeEach(function(done) {
     List.createNew(listArgs)
     .then(function(list) {
-      _list = list;
+      _list = list.toJSON();
       done();
     });
   });
@@ -38,12 +38,39 @@ describe('List item', function() {
     });
   });
 
-  it('should allow retrieving a single item');
-  it('should allow retrieving items from a particular list');
+  describe('Manipulating items', function() {
 
-  it('should allow updating a list item');
-  it('should not allow updating invalid columns');
+    var _item;
 
-  it('should allow deleting a single list item');
-  it('should allow deleting all items from a list');
+    beforeEach(function(done) {
+      var args = { list_id: _list.id, title: 'New Item' }
+
+      ListItem.createNew(args)
+      .then(function(item) {
+        _item = item.toJSON();
+        done();
+      });
+    });
+
+    it('should allow retrieving a single item', function(done) {
+      var item;
+
+      ListItem.findOne({ id: _item.id })
+      .then(function(result) {
+        item = result.toJSON();
+
+        expect(item.title).to.equal(_item.title);
+        expect(item.list_id).to.equal(_item.list_id);
+        done();
+      });
+    });
+
+    it('should allow retrieving items from a particular list');
+
+    it('should allow updating a list item');
+    it('should not allow updating invalid columns');
+
+    it('should allow deleting a single list item');
+    it('should allow deleting all items from a list');
+  });
 });
