@@ -15,6 +15,11 @@ Base.Model = Base.Model.extend({}, {
     return this.forge(args).save();
   },
 
+  update: function(id, args) {
+    return this.forge({ id: id })
+      .save(args, { method: 'update', patch: true });
+  },
+
   findOne: function(args) {
     return this.forge(args).fetch({ require: true });
   }

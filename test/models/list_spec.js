@@ -6,6 +6,8 @@ var db   = require('../support/db'),
 
 describe('List', function() {
 
+  var args = { name: 'Test List' }
+
   afterEach(function(done) {
     db.cleanUp()
     .then(function() {
@@ -14,8 +16,7 @@ describe('List', function() {
   });
 
   it('should allow creating a new list', function(done) {
-    var args = { name: 'Test List' },
-        list;
+    var list;
 
     List.createNew(args)
     .then(function(result) {
@@ -25,6 +26,22 @@ describe('List', function() {
       list = result.toJSON();
 
       expect(list.name).to.equal(args.name);
+      done();
+    });
+  });
+
+  it('should allow editing an existing list', function(done) {
+    var newArgs, list;
+
+    List.createNew(args)
+    .then(function(result) {
+      newArgs = { name: 'New Name' };
+      return List.update(result.id, newArgs);
+    })
+    .then(function(result) {
+      list = result.toJSON();
+
+      expect(list.name).to.equal(newArgs.name);
       done();
     });
   });
