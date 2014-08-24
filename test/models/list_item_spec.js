@@ -134,6 +134,18 @@ describe('List item', function() {
       });
     });
 
-    it('should allow deleting all items from a list');
+    it('should allow deleting all items from a list', function(done) {
+      ListItem.createNew({ list_id: _list.id, title: 'Item Two' })
+      .then(function(result) {
+        return ListItem.deleteByList(_list.id);
+      })
+      .then(function() {
+        return ListItem.findByList(_list.id);
+      })
+      .then(function(results) {
+        expect(results.length).to.equal(0);
+        done();
+      });
+    });
   });
 });

@@ -1,6 +1,8 @@
 'use strict';
 
-var Base = require('./base'),
+var _       = require('underscore'),
+    Promise = require('bluebird'),
+    Base    = require('./base'),
 
     ListItem;
 
@@ -12,6 +14,21 @@ ListItem = Base.Model.extend({
 
   findByList: function(listId) {
     return this.findMany('list_id', listId);
+  },
+
+  deleteByList: function(listId) {
+    var self = this,
+        promises;
+
+    return self.findByList(listId)
+    .then(function(items) {
+
+      promises = _.map(items.toJSON(), function(item) {
+        return self.delete(item.id);
+      });
+
+      return Promise.all(promises);
+    });
   }
 });
 
