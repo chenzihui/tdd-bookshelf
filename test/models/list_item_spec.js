@@ -1,6 +1,7 @@
 'use strict';
 
-var List     = require('../../src/list'),
+var _        = require('underscore'),
+    List     = require('../../src/list'),
     ListItem = require('../../src/list_item'),
 
     db       = require('../support/db');
@@ -65,7 +66,37 @@ describe('List item', function() {
       });
     });
 
-    it('should allow retrieving items from a particular list');
+    it('should allow retrieving items from a particular list', function(done) {
+      var _l2, _i2, _i3, items, ids;
+
+      List.createNew({ name: 'Another List' })
+      .then(function(list) {
+        _l2 = list.toJSON();
+
+        return ListItem.createNew({ list_id: _list.id, title: 'Another Item' });
+      })
+      .then(function(item) {
+        _i2 = item.toJSON();
+
+        return ListItem.createNew({ list_id: _l2.id, title: 'One More' });
+      })
+      .then(function(item) {
+        _i3 = item.toJSON();
+
+        return ListItem.findByList(_list.id)
+      })
+      .then(function(results) {
+        items = results.toJSON();
+
+        expect(items.length).to.equal(2);
+
+        ids = _.pluck(items, 'id');
+        expect(ids).to.contain(_item.id)
+        expect(ids).to.contain(_i2.id);
+        expect(ids).not.to.contain(_i3.id);
+        done();
+      });
+    });
 
     it('should allow updating a list item');
     it('should not allow updating invalid columns');

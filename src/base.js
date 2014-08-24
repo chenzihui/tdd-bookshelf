@@ -46,6 +46,12 @@ Base.Model = Base.Model.extend({}, {
 
   findOne: function(args) {
     return this.forge(args).fetch({ require: true });
+  },
+
+  findMany: function(field, value) {
+    return this.forge()
+      .query('where', field, '=', value)
+      .fetchAll();
   }
 });
 
