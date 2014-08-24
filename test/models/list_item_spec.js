@@ -123,7 +123,17 @@ describe('List item', function() {
       });
     });
 
-    it('should allow deleting a single list item');
+    it('should allow deleting a single list item', function(done) {
+      ListItem.delete(_item.id)
+      .then(function() {
+        return ListItem.findOne({ id: _item.id });
+      })
+      .catch(function(err) {
+        expect(err).to.exist;
+        done();
+      });
+    });
+
     it('should allow deleting all items from a list');
   });
 });
