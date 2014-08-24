@@ -98,7 +98,19 @@ describe('List item', function() {
       });
     });
 
-    it('should allow updating a list item');
+    it('should allow updating a list item', function(done) {
+      var newArgs = { title: 'New Title' },
+          _i;
+
+      ListItem.update(_item.id, newArgs)
+      .then(function(item) {
+        _i = item.toJSON();
+
+        expect(_i.title).to.equal(newArgs.title);
+        done();
+      });
+    });
+
     it('should not allow updating invalid columns');
 
     it('should allow deleting a single list item');
