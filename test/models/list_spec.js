@@ -30,19 +30,45 @@ describe('List', function() {
     });
   });
 
-  it('should allow editing an existing list', function(done) {
-    var newArgs, list;
+  describe('Manipulating lists', function() {
 
-    List.createNew(args)
-    .then(function(result) {
-      newArgs = { name: 'New Name' };
-      return List.update(result.id, newArgs);
-    })
-    .then(function(result) {
-      list = result.toJSON();
+    var _list;
 
-      expect(list.name).to.equal(newArgs.name);
-      done();
+    beforeEach(function(done) {
+      List.createNew(args)
+      .then(function(list) {
+        _list = list.toJSON();
+        done();
+      });
+    });
+
+    it('should allow editing an existing list', function(done) {
+      var newArgs = { name: 'New Name' },
+          list;
+
+      List.update(_list.id, newArgs)
+      .then(function(result) {
+        list = result.toJSON();
+
+        expect(list.name).not.to.equal(_list.name);
+        expect(list.name).to.equal(newArgs.name);
+        done();
+      });
+    });
+
+    it('should not allow editing date columns', function(done) {
+      var newArgs = {
+        created_at: new Date(2014, 8, 20),
+        updated_at: new Date(2014, 7, 21)
+      },
+
+      list;
+
+      List.update(_list.id, newArgs)
+      .catch(function(err) {
+        expect(err).to.exist;
+        done();
+      });
     });
   });
 });
