@@ -111,7 +111,17 @@ describe('List item', function() {
       });
     });
 
-    it('should not allow updating invalid columns');
+    it('should not allow updating invalid columns', function(done) {
+      var newArgs = {
+        created_at: new Date(2014, 7, 20)
+      };
+
+      ListItem.update(_item.id, newArgs)
+      .catch(function(err) {
+        expect(err).to.exist;
+        done();
+      });
+    });
 
     it('should allow deleting a single list item');
     it('should allow deleting all items from a list');
