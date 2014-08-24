@@ -1,0 +1,14 @@
+{
+    "database": {
+        "client": "pg",
+        "connection": {
+            "host": "127.0.0.1",
+            "database": "tddbookshelf",
+            "charset": "utf8"
+        },
+
+        "migrations": {
+            "tableName": "migrations"
+        }
+    }
+}

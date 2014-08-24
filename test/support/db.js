@@ -1,13 +1,13 @@
 'use strict';
 
 var knex     = require('knex'),
-    knexfile = require('../../knexfile'),
+    knexfile = require('../../src/config'),
 
-    db   = knex(knexfile.test);
+    db   = knex(knexfile.database);
 
 exports.cleanUp = function() {
-  return db.migrate.rollback(knexfile.test.migrations)
+  return db.migrate.rollback(knexfile.database.migrations)
   .then(function() {
-    return db.migrate.latest(knexfile.test.migrations);
+    return db.migrate.latest(knexfile.database.migrations);
   });
 };
